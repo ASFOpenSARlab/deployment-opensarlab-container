@@ -129,6 +129,8 @@ RUN python3 -m pip install \
         git clone https://github.com/jupyterhub/jupyter-remote-desktop-proxy.git /opt/install &&\ 
         mv /tmp/vnc.patch /opt/install/vnc.patch &&\
         cd /opt/install &&\
+        # Due to breaking updates, for now try to find an older working commit
+        git checkout 8d1342d9c93803c5f9c3b820dbbcaa55d3b91e01 &&\
         mamba env update -n base --file environment.yml &&\
         patch -p1 < vnc.patch &&\
     cd / &&\

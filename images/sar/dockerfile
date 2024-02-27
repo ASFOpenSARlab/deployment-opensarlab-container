@@ -60,7 +60,6 @@ RUN apt install --no-install-recommends --fix-missing -y \
     gmt-gshhg \
     gmt \
     ### Jupyter Desktop
-    #flatpak \
 ##    patch \
 ##    dbus-x11 \
 ##    xfce4 \
@@ -70,7 +69,8 @@ RUN apt install --no-install-recommends --fix-missing -y \
 ##    xorg \
 ##    xubuntu-icon-theme \
 ##    tigervnc-standalone-server \
-##    tigervnc-xorg-extension
+##    tigervnc-xorg-extension \
+    --
 
 # Update conda and mamba: this breaks things in the hook, need to play with it more
 # Updating just conda and mamba will auto-remove pip, so force pip to update to remain
@@ -101,7 +101,7 @@ RUN mamba install -c conda-forge -y \
     dask-gateway \
     dask \
     distributed \
-    ### Jupyter DEsktop
+    ### Jupyter Desktop
 ##    websockify \
     --
 

@@ -131,9 +131,10 @@ ENV PATH=/usr/local/GMTSAR/bin:$PATH
 
 ######
 # Virtual Desktop
+RUN python3 -m pip install jupyter-remote-desktop-proxy &&\
+    mamba install -c conda-forge -y websockify
+
 RUN apt install --no-install-recommends --fix-missing -y \
-    ### Jupyter Desktop
-    patch \
     dbus-x11 \
     xfce4 \
     xfce4-panel \
@@ -145,18 +146,9 @@ RUN apt install --no-install-recommends --fix-missing -y \
     tigervnc-xorg-extension \
     --
 
-COPY pkgs/vnc_patches/vnc.patch /tmp/vnc.patch
+# Replace Hub Control button with something more suited for an OSL lab
+RUN sed -i -e 's|hub_control_panel_url|base_url|' -e 's|Hub Control Panel|Shutdown and Logout Page|' /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
-RUN mamba install -c conda-forge -y websockify && \
-    # When running a local version of this dockerfile, consult https://github.com/jupyterhub/jupyter-remote-desktop-proxy/issues/47#issuecomment-1687484891
-    cd / &&\
-        git clone https://github.com/jupyterhub/jupyter-remote-desktop-proxy.git /opt/install &&\
-        mv /tmp/vnc.patch /opt/install/vnc.patch &&\
-        cd /opt/install &&\
-        # Due to breaking updates, for now try to find an older working commit
-        git checkout 8d1342d9c93803c5f9c3b820dbbcaa55d3b91e01 &&\
-        mamba env update -n base --file environment.yml &&\
-        patch -p1 < vnc.patch
 #
 # END Virtual Desktop
 ######

@@ -153,6 +153,18 @@ RUN sed -i \
     -e 's|Hub Control Panel|Shutdown and Logout Page|' \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
+# Install Pale Moon browser
+RUN mkdir /tmp/browser && cd /tmp &&\
+    #RUN apt install -y netsurf-gtk
+    echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:stevenpusser.list &&\
+    wget -O - https://download.opensuse.org/repositories/home:stevenpusser/xUbuntu_20.04/Release.key | sudo apt-key add - &&\
+    apt update --no-install-recommends &&\
+    apt install -y palemoon &&\
+    # Have http links and shortcuts open in browser
+    #gio mime x-scheme-handler/http palemoon.desktop &&\
+    #gio mime x-scheme-handler/https palemoon.desktop &&\
+    cd / && rm -rf /tmp/browser
+
 #
 # END Virtual Desktop
 ######

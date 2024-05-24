@@ -94,7 +94,8 @@ RUN python3 -m pip install \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
-        jupyterlab-jupyterbook-navigation==0.1.4 \
+        jupyterlab-jupyterbook-navigation==0.1.5 \
+        jupyterlab_myst \
         ### For pyGMTSAR
         pygmtsar &&\
     cd / &&\
@@ -152,6 +153,10 @@ RUN sed -i \
     -e 's|{{ hub_control_panel_url }}|/lab/{{ LAB_SHORT_NAME }}/hub/home|' \
     -e 's|Hub Control Panel|Shutdown and Logout Page|' \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
+
+#RUN sed -i \
+#    -e 's|cd | sleep 1 && cd |' \
+#    /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/share/xstartup
 
 # Install Browser
 COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox

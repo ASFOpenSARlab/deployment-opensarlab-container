@@ -154,9 +154,9 @@ RUN sed -i \
     -e 's|Hub Control Panel|Shutdown and Logout Page|' \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
-#RUN sed -i \
-#    -e 's|cd | sleep 1 && cd |' \
-#    /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/share/xstartup
+RUN sed -i \
+    -e 's|cd | sleep 1 && cd |' \
+    /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/share/xstartup
 
 # Install Browser
 COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox

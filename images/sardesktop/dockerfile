@@ -155,7 +155,7 @@ RUN sed -i \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
 RUN sed -i \
-    -e 's|cd | sleep 1 && cd |' \
+    -e 's|cd |sleep 1 \&\& cd |' \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/share/xstartup
 
 # Install Browser

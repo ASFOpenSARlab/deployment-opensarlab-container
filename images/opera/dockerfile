@@ -153,10 +153,8 @@ RUN python3 -m pip install \
     rm -rf /home/jovyan/..?* /home/jovyan/.[!.]* /home/jovyan/*
 
 # Create opera environment and register kernel
-COPY environment/environment.yaml /tmp/environment.yaml
-
-RUN mamba env create -f tmp/environment.yaml &&\
-    /opt/conda/envs/opera/bin/python -m ipykernel --prefix /opt/conda/envs/opera --name opera
+RUN mamba env create -f environment/environment.yaml &&\
+    /opt/conda/envs/opera/bin/python -m ipykernel install --prefix /opt/conda/envs/opera --name opera --display-name "opera"
 
 ### GMTSAR
 ENV PATH=/usr/local/GMTSAR/bin:$PATH

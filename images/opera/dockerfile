@@ -157,7 +157,10 @@ COPY environment/environment.yaml /tmp/environment.yaml
 
 RUN mamba env create -f /tmp/environment.yaml &&\
     /opt/conda/envs/opera/bin/python -m ipykernel install --prefix /opt/conda/envs/opera --name opera --display-name "opera" &&\
-    rm -rf /opt/conda/pkgs/cache
+    rm -rf /opt/conda/pkgs/cache &&\
+    conda env config vars set -n opera GDAL_HTTP_COOKIEFILE=/tmp/cookies.txt &&\
+    conda env config vars set -n opera GDAL_HTTP_COOKIEJAR=/tmp/cookies.txt &&\
+    conda env config vars set -n opera VSI_CACHE=YES
 
 ### GMTSAR
 ENV PATH=/usr/local/GMTSAR/bin:$PATH

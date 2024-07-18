@@ -156,7 +156,8 @@ RUN python3 -m pip install \
 COPY environment/environment.yaml /tmp/environment.yaml
 
 RUN mamba env create -f /tmp/environment.yaml &&\
-    /opt/conda/envs/opera/bin/python -m ipykernel install --prefix /opt/conda/envs/opera --name opera --display-name "opera"
+    /opt/conda/envs/opera/bin/python -m ipykernel install --prefix /opt/conda/envs/opera --name opera --display-name "opera" &&\
+    rm -rf /opt/conda/pkgs/cache
 
 ### GMTSAR
 ENV PATH=/usr/local/GMTSAR/bin:$PATH

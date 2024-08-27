@@ -12,7 +12,6 @@ RUN mamba install -c conda-forge -y \
     ipywidgets \
     --
 
-COPY ./etc/gateway.yaml /etc/dask/gateway.yaml
 COPY ./etc/gateway_access_example.ipynb /etc/singleuser/notebooks/gateway_access_example.ipynb
 
 WORKDIR /home/jovyan

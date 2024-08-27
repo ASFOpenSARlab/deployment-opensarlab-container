@@ -1,0 +1,11 @@
+**
+!.gitignore
+!build.sh
+!dockerfile
+!download.sh
+!pkgs
+!pkgs/**
+!environment
+!environment/**
+!configs
+!configs/**

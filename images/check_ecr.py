@@ -6,6 +6,10 @@ import boto3
 
 def main(image_name:str, aws_region:str, container_namespace:str, aws_profile):
     
+    if image_name.startswith('_'):
+        print(f"Image name '{image_name}' starts with '_' and will not be built.")
+        return
+
     if not image_name.isalnum():
         raise ValueError(f"{image_name} is not pure alphanumeric.")
 
@@ -18,10 +22,6 @@ def main(image_name:str, aws_region:str, container_namespace:str, aws_profile):
     ecr = session.client('ecr')
 
     try:
-        if image_name.startswith('_'):
-            print(f"Image name '{image_name}' starts with '_' and will not be built.")
-            return 
-
         repositoryName=f"{container_namespace}/{image_name}"
         _ = ecr.describe_repositories(repositoryNames=[repositoryName])
         print(f"Repo '{repositoryName}' already exists.")

@@ -5,10 +5,6 @@ import sys
 import boto3
 
 def main(image_name:str, aws_region:str, container_namespace:str, aws_profile):
-    
-    if image_name.startswith('_'):
-        print(f"Image name '{image_name}' starts with '_' and will not be built.")
-        return
 
     if not image_name.isalnum():
         raise ValueError(f"{image_name} is not pure alphanumeric.")

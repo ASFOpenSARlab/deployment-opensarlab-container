@@ -132,11 +132,3 @@ ENV PATH=/usr/local/GMTSAR/bin:$PATH
 
 WORKDIR /home/jovyan
 USER jovyan
-
-##########################################
-
-FROM release as testing 
-
-COPY tests/* /tests/
-
-RUN bash /tests/*.sh

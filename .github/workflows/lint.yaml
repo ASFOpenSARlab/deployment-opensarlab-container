@@ -1,0 +1,52 @@
+name: Linting and Formatting
+
+on:
+  push:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+    
+      - name: Install Packages
+        run: |
+            sudo apt update
+            sudo apt install shellcheck
+            sudo apt install jq
+            python -m pip install --upgrade pip 
+            pip install black
+            pip install ruff
+            pip install pynblint
+
+      # Shell Lints
+      - name: Check shell files
+        run: |
+          find . -name '*.sh' | while read file; do
+            shellcheck $file
+          done
+      
+      # Python Lints
+      - name: Run Black Formatting
+        run: |
+            black . && git diff --exit-code || { echo "Code is not black formatted"; exit 1; }
+    
+      - name: Run Python Lints
+        run: |
+            # Checks .ipynb files as well
+            ruff check .
+        
+      # JupyterNotebook Lints
+      - name: Run JupyterNotebook Lints
+        run: |
+            set -e 
+            pynblint . --output pynblint.json -q -y
+            jq -r '.notebook_level_lints[] | .lints | select(length != 0) | error("One or more notebooks has warnings")' pynblint.json || exit 1
+    

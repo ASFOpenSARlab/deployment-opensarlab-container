@@ -1,7 +1,7 @@
 name: Linting and Formatting
 
 on:
-  push:
+  pull_request:
 
 jobs:
   format:
@@ -16,37 +16,69 @@ jobs:
         with:
           python-version: '3.10' 
     
+      - name: Install Go
+        run: |
+          sudo apt update
+          sudo apt-get install --reinstall ca-certificates -y
+          sudo apt install golang-go -y
+          # Add go to github path
+          echo "${HOME}/go/bin" >> $GITHUB_PATH
       - name: Install Packages
         run: |
-            sudo apt update
-            sudo apt install shellcheck
-            sudo apt install jq
-            python -m pip install --upgrade pip 
-            pip install black
-            pip install ruff
-            pip install pynblint
+          sudo apt update
+          sudo apt install shellcheck
+          sudo apt install shfmt
+          sudo apt install jq
+          python -m pip install --upgrade pip 
+          pip install black
+          pip install ruff
+          pip install pynblint
+          pip install yamllint
+          go install github.com/google/yamlfmt/cmd/yamlfmt@latest
 
       # Shell Lints
-      - name: Check shell files
+      - name: Lint Shell Files
         run: |
           find . -name '*.sh' | while read file; do
             shellcheck $file
           done
+      # Shell Formatting
+      - name: Format Shell Files
+        run: |
+          # To fix, run shfmt -w .
+          shfmt -d -mn .
       
       # Python Lints
-      - name: Run Black Formatting
+      - name: Lint Python Files
         run: |
-            black . && git diff --exit-code || { echo "Code is not black formatted"; exit 1; }
-    
-      - name: Run Python Lints
+          # Checks .ipynb files as well
+          ruff check .
+      # Python Formatting
+      - name: Format Python Files
         run: |
-            # Checks .ipynb files as well
-            ruff check .
+          black . && git diff --exit-code || { echo "Code is not black formatted"; exit 1; }
         
       # JupyterNotebook Lints
-      - name: Run JupyterNotebook Lints
+      - name: Lint JupyterNotebook Files
         run: |
-            set -e 
-            pynblint . --output pynblint.json -q -y
-            jq -r '.notebook_level_lints[] | .lints | select(length != 0) | error("One or more notebooks has warnings")' pynblint.json || exit 1
+          set -e 
+          pynblint . --output pynblint.json -q -y
+          jq -r '.notebook_level_lints[] | .lints | select(length != 0) | error("One or more notebooks has warnings")' pynblint.json || exit 1
+
+      # Yaml Lints
+      - name: Lint Yaml Files
+        run: |
+          # Lint each yaml file in repository
+          find . -name '*.yaml' | while read file; do
+            yamllint $file
+          done
+      # Yaml Formatting
+      - name: Format Yaml Files
+        run: |
+          yamlfmt -dry -quiet . >> yamlfmt-out.txt
+          # If yamlfmt output is not empty, throw error
+          if [ -s yamlfmt-out.txt ]; then
+            cat yamlfmt-out.txt
+            exit 1
+          fi
     

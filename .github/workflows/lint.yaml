@@ -1,7 +1,7 @@
+---
 name: Linting and Formatting
 
-on:
-  pull_request:
+on: pull_request  # yamllint disable-line rule:truthy
 
 jobs:
   format:
@@ -14,8 +14,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' 
-    
+          python-version: '3.10'
+
       - name: Install Go
         run: |
           sudo apt update
@@ -29,7 +29,7 @@ jobs:
           sudo apt install shellcheck
           sudo apt install shfmt
           sudo apt install jq
-          python -m pip install --upgrade pip 
+          python -m pip install --upgrade pip
           pip install black
           pip install ruff
           pip install pynblint
@@ -45,9 +45,9 @@ jobs:
       # Shell Formatting
       - name: Format Shell Files
         run: |
-          # To fix, run shfmt -w .
+          # To fix, run 'shfmt -w .'
           shfmt -d .
-      
+
       # Python Lints
       - name: Lint Python Files
         run: |
@@ -56,12 +56,13 @@ jobs:
       # Python Formatting
       - name: Format Python Files
         run: |
+          # To fix, run 'black .'
           black --check .
-        
+
       # JupyterNotebook Lints
       - name: Lint JupyterNotebook Files
         run: |
-          set -e 
+          set -e
           pynblint . --output pynblint.json -q -y
           jq -r '.notebook_level_lints[] | .lints | select(length != 0) | error("One or more notebooks has warnings")' pynblint.json || exit 1
 
@@ -74,11 +75,11 @@ jobs:
           done
       # Yaml Formatting
       - name: Format Yaml Files
-        run: |
+        run: |-
+          # To fix, run `yamlfmt .`
           yamlfmt -dry -quiet . >> yamlfmt-out.txt
           # If yamlfmt output is not empty, throw error
           if [ -s yamlfmt-out.txt ]; then
             cat yamlfmt-out.txt
             exit 1
           fi
-    

@@ -56,7 +56,7 @@ jobs:
       # Python Formatting
       - name: Format Python Files
         run: |
-          black . && git diff --exit-code || { echo "Code is not black formatted"; exit 1; }
+          black --check .
         
       # JupyterNotebook Lints
       - name: Lint JupyterNotebook Files

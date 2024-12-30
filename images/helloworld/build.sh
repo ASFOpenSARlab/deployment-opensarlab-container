@@ -1,3 +1,4 @@
+#!/bin/bash
 
 set -ex
 
@@ -10,12 +11,12 @@ IMAGE_NAME=$1
 
 time docker build -f dockerfile.build --target testing .
 time docker build -f dockerfile.build \
-    -t $DOCKER_REGISTRY/$IMAGE_NAME:$BUILD_TAG \
-    -t $DOCKER_REGISTRY/$IMAGE_NAME:latest \
-    -t $DOCKER_REGISTRY/$IMAGE_NAME:$COMMIT_HEAD \
-    --target release .
+	-t "$DOCKER_REGISTRY"/"$IMAGE_NAME":"$BUILD_TAG" \
+	-t "$DOCKER_REGISTRY"/"$IMAGE_NAME":latest \
+	-t "$DOCKER_REGISTRY"/"$IMAGE_NAME":"$COMMIT_HEAD" \
+	--target release .
 
 # Push to registry
-docker push $DOCKER_REGISTRY/$IMAGE_NAME:$BUILD_TAG
-docker push $DOCKER_REGISTRY/$IMAGE_NAME:latest
-docker push $DOCKER_REGISTRY/$IMAGE_NAME:$COMMIT_HEAD
+docker push "$DOCKER_REGISTRY"/"$IMAGE_NAME":"$BUILD_TAG"
+docker push "$DOCKER_REGISTRY"/"$IMAGE_NAME":latest
+docker push "$DOCKER_REGISTRY"/"$IMAGE_NAME":"$COMMIT_HEAD"

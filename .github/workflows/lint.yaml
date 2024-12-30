@@ -46,7 +46,7 @@ jobs:
       - name: Format Shell Files
         run: |
           # To fix, run shfmt -w .
-          shfmt -d -mn .
+          shfmt -d .
       
       # Python Lints
       - name: Lint Python Files

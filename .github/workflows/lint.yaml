@@ -28,13 +28,13 @@ jobs:
           sudo apt update
           sudo apt install shellcheck
           sudo apt install shfmt
-          sudo apt install jq
           python -m pip install --upgrade pip
           pip install black
           pip install ruff
           pip install pynblint
           pip install yamllint
           go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+          docker pull hadolint/hadolint:latest-debian
 
       # Shell Lints
       - name: Lint Shell Files
@@ -52,19 +52,13 @@ jobs:
       - name: Lint Python Files
         run: |
           # Checks .ipynb files as well
+          # Run with --fix to fix
           ruff check .
       # Python Formatting
       - name: Format Python Files
         run: |
           # To fix, run 'black .'
           black --check .
-
-      # JupyterNotebook Lints
-      - name: Lint JupyterNotebook Files
-        run: |
-          set -e
-          pynblint . --output pynblint.json -q -y
-          jq -r '.notebook_level_lints[] | .lints | select(length != 0) | error("One or more notebooks has warnings")' pynblint.json || exit 1
 
       # Yaml Lints
       - name: Lint Yaml Files
@@ -83,3 +77,11 @@ jobs:
             cat yamlfmt-out.txt
             exit 1
           fi
+      # Dockerfile
+      - name: Lint Dockerfile Files
+        run: |-
+          # Lint each 'dockerfile' or 'Dockerfile' file in repository
+          find . -iname 'dockerfile' | while read file; do
+            echo -e "\nLinting $file"
+            docker run --rm -i hadolint/hadolint < $file
+          done

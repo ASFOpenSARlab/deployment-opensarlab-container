@@ -5,6 +5,7 @@ WORKDIR /
 
 RUN set -ve
 
+# hadolint ignore=DL3059
 RUN mamba install -c conda-forge -y \
     dask-gateway \
     dask=='2024.1.0' \

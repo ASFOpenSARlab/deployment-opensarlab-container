@@ -3,7 +3,7 @@ set -ex
 
 [ -e download.sh ] && bash download.sh
 
-cp dockerfile dockerfile.build
+cp Dockerfile dockerfile.build
 
 SED_STR="s|--from=(.*):|--from=$DOCKER_REGISTRY/\1:latest|g"
 sed -i -r "$SED_STR" dockerfile.build

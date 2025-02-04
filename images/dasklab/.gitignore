@@ -1,6 +1,6 @@
 *
 !.gitignore 
 !build.sh
-!dockerfile
+!Dockerfile
 !etc/
 !etc/*

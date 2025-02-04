@@ -8,9 +8,7 @@ RUN set -ve
 
 COPY pkgs/vnc_patches/vnc.patch /tmp/vnc.patch
 
-RUN apt-get update \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update 
 
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends -y \
@@ -19,9 +17,7 @@ RUN apt-get install --no-install-recommends -y \
     apt-get install --no-install-recommends -y gpg-agent && \
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
     apt-get update && \
-    apt-get upgrade -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y 
 
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends --fix-missing -y \

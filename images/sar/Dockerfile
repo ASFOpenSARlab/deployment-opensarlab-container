@@ -6,17 +6,16 @@ WORKDIR /
 
 RUN set -ve
 
-# hadolint ignore=DL3008
-RUN apt-get update \
-    apt-get install --no-install-recommends -y \
+# hadolint ignore=DL3009,DL3059
+RUN apt-get update
+# hadolint ignore=DL3008,DL3009
+RUN apt-get install --no-install-recommends -y \
         software-properties-common \
         git && \
     apt-get install --no-install-recommends -y gpg-agent && \
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
     apt-get update && \
-    apt-get upgrade -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y
 
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends --fix-missing -y \
@@ -96,7 +95,7 @@ RUN mamba install -c conda-forge -y \
     --
 
 # hadolint ignore=DL3013,DL3059
-RUN python3 -m --no-cache-dir pip install \
+RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \

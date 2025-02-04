@@ -6,18 +6,19 @@ WORKDIR /
 
 RUN set -ve
 
-# hadolint ignore=DL3008
-RUN apt-get update \
-    apt-get install --no-install-recommends -y \
+# ignore DL3008 because pinning is not desired
+# ignore DL3059 because combining the two RUN statements fail
+# hadolint ignore=DL3008,DL3059
+RUN apt-get update
+RUN apt-get install --no-install-recommends -y \
         software-properties-common \
         git && \
     apt-get install --no-install-recommends -y gpg-agent && \
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
     apt-get update && \
-    apt-get upgrade -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y
 
+# ignore DL3008 because pinning is not desired
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends --fix-missing -y \
     ### GENERAL
@@ -67,6 +68,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
 # Updating just conda and mamba will auto-remove pip, so force pip to update to remain
 #RUN mamba update -c conda-forge -y conda mamba pip
 
+# ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
 RUN mamba install -c conda-forge -y \
     ### Install plotting and general
@@ -95,8 +97,9 @@ RUN mamba install -c conda-forge -y \
     distributed \
     --
 
+# ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
-RUN python3 -m --no-cache-dir pip install \
+RUN python3 -m pip install --no-cache-dir \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
@@ -138,9 +141,10 @@ ENV PATH=/usr/local/GMTSAR/bin:$PATH
 
 ######
 # Virtual Desktop
-RUN python3 -m --no-cache-dir pip install jupyter-remote-desktop-proxy &&\
+RUN python3 -m pip install --no-cache-dir jupyter-remote-desktop-proxy &&\
     mamba install -c conda-forge -y websockify
 
+# ignore DL3008 because pinning is not desired
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends --fix-missing -y \
     dbus-x11 \
@@ -155,6 +159,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     --
 
 # Replace Hub Control button with something more suited for an OSL lab
+# ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
 RUN sed -i \
     -e 's|if hub_control_panel_url|if LAB_SHORT_NAME|' \
@@ -162,6 +167,7 @@ RUN sed -i \
     -e 's|Hub Control Panel|Shutdown and Logout Page|' \
     /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
+# ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
 RUN sed -i \
     -e 's|cd |sleep 1 \&\& cd |' \
@@ -170,6 +176,7 @@ RUN sed -i \
 # Install Browser
 COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox
 # hadolint ignore=DL3008
+# ignore DL3008 because pinning is not desired
 RUN add-apt-repository ppa:mozillateam/ppa &&\
     apt-get install -y --no-install-recommends firefox
 #

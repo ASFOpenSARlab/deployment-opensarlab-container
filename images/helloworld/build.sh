@@ -2,7 +2,7 @@
 
 set -ex
 
-cp dockerfile dockerfile.build
+cp Dockerfile dockerfile.build
 
 BUILD_TAG=$(date +"%F-%H-%M-%S")
 COMMIT_HEAD=$(git rev-parse --short HEAD)

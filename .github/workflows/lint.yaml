@@ -81,7 +81,7 @@ jobs:
       - name: Lint Dockerfile Files
         run: |-
           # Lint each 'dockerfile' or 'Dockerfile' file in repository
-          find . -iname 'dockerfile' | while read file; do
+          find . -iname 'Dockerfile' | while read file; do
             echo -e "\nLinting $file"
             docker run --rm -i -v ./hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < $file
           done

@@ -1,87 +1,18 @@
 ---
 name: Linting and Formatting
 
-on: pull_request  # yamllint disable-line rule:truthy
+on:  # yamllint disable-line rule:truthy
+  pull_request:
 
 jobs:
-  format:
-    runs-on: ubuntu-latest
+  shell:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-shell-code-quality.yaml@dp/add-code-quality-workflows
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  python:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-python-code-quality.yaml@dp/add-code-quality-workflows
 
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+  yaml:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@dp/add-code-quality-workflows
 
-      - name: Install Go
-        run: |
-          sudo apt update
-          sudo apt-get install --reinstall ca-certificates -y
-          sudo apt install golang-go -y
-          # Add go to github path
-          echo "${HOME}/go/bin" >> $GITHUB_PATH
-      - name: Install Packages
-        run: |
-          sudo apt update
-          sudo apt install shellcheck
-          sudo apt install shfmt
-          python -m pip install --upgrade pip
-          pip install black
-          pip install ruff
-          pip install pynblint
-          pip install yamllint
-          go install github.com/google/yamlfmt/cmd/yamlfmt@latest
-          docker pull hadolint/hadolint:latest-debian
-
-      # Shell Lints
-      - name: Lint Shell Files
-        run: |
-          find . -name '*.sh' | while read file; do
-            shellcheck $file
-          done
-      # Shell Formatting
-      - name: Format Shell Files
-        run: |
-          # To fix, run 'shfmt -w .'
-          shfmt -d .
-
-      # Python Lints
-      - name: Lint Python Files
-        run: |
-          # Checks .ipynb files as well
-          # Run with --fix to fix
-          ruff check .
-      # Python Formatting
-      - name: Format Python Files
-        run: |
-          # To fix, run 'black .'
-          black --check .
-
-      # Yaml Lints
-      - name: Lint Yaml Files
-        run: |
-          # Lint each yaml file in repository
-          find . -name '*.yaml' | while read file; do
-            yamllint $file
-          done
-      # Yaml Formatting
-      - name: Format Yaml Files
-        run: |-
-          # To fix, run `yamlfmt .`
-          yamlfmt -dry -quiet . >> yamlfmt-out.txt
-          # If yamlfmt output is not empty, throw error
-          if [ -s yamlfmt-out.txt ]; then
-            cat yamlfmt-out.txt
-            exit 1
-          fi
-      # Dockerfile
-      - name: Lint Dockerfile Files
-        run: |-
-          # Lint each 'dockerfile' or 'Dockerfile' file in repository
-          find . -iname 'Dockerfile' | while read file; do
-            echo -e "\nLinting $file"
-            docker run --rm -i -v ./hadolint.yaml:/root/.config/hadolint.yaml hadolint/hadolint < $file
-          done
+  dockerfile:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@dp/add-code-quality-workflows

@@ -6,13 +6,13 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   shell:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-shell-code-quality.yaml@dp/add-code-quality-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-shell-code-quality.yaml@v0.0.3
 
   python:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-python-code-quality.yaml@dp/add-code-quality-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-python-code-quality.yaml@v0.0.3
 
   yaml:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@dp/add-code-quality-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@v0.0.3
 
   dockerfile:
-    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@dp/add-code-quality-workflows
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-dockerfile-code-quality.yaml@v0.0.3

@@ -8,9 +8,13 @@ RUN set -ve
 
 COPY pkgs/vnc_patches/vnc.patch /tmp/vnc.patch
 
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3009
 RUN apt-get update 
 
-# hadolint ignore=DL3008
+# ignore DL3008 because pinning is not desired
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3008,DL3009
 RUN apt-get install --no-install-recommends -y \
         software-properties-common \
         git && \
@@ -19,6 +23,7 @@ RUN apt-get install --no-install-recommends -y \
     apt-get update && \
     apt-get upgrade -y 
 
+# ignore DL3008 because pinning is not desired
 # hadolint ignore=DL3008
 RUN apt-get install --no-install-recommends --fix-missing -y \
     ### GENERAL
@@ -79,6 +84,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
 # Updating just conda and mamba will auto-remove pip, so force pip to update to remain
 #RUN mamba update -c conda-forge -y conda mamba pip
 
+# ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
 RUN mamba install -c conda-forge -y \
     ### Install plotting and general
@@ -110,6 +116,8 @@ RUN mamba install -c conda-forge -y \
     -- 
 
 # Install python packages
+# ignore DL3059 to make the two codeblocks distinct
+# ignore DL3013 since pinning packages is not desired
 # hadolint ignore=DL3013,DL3059
 RUN python3 -m pip install --no-cache-dir \
         ### For ASF

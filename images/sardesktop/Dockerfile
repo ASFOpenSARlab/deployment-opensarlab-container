@@ -8,8 +8,12 @@ RUN set -ve
 
 # ignore DL3008 because pinning is not desired
 # ignore DL3059 because combining the two RUN statements fail
-# hadolint ignore=DL3008,DL3059
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3008,DL3059,DL3009
 RUN apt-get update
+# ignore DL3008 because pinning is not desired
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3008,DL3009
 RUN apt-get install --no-install-recommends -y \
         software-properties-common \
         git && \
@@ -98,7 +102,8 @@ RUN mamba install -c conda-forge -y \
     --
 
 # ignore DL3059 to make the two codeblocks distinct
-# hadolint ignore=DL3059
+# ignore DL3013 since pinning packages is not desired
+# hadolint ignore=DL3059,DL3013
 RUN python3 -m pip install --no-cache-dir \
         ### For ASF
         url-widget \
@@ -141,6 +146,8 @@ ENV PATH=/usr/local/GMTSAR/bin:$PATH
 
 ######
 # Virtual Desktop
+# ignore DL3013 since pinning packages is not desired
+# hadolint ignore=DL3013
 RUN python3 -m pip install --no-cache-dir jupyter-remote-desktop-proxy &&\
     mamba install -c conda-forge -y websockify
 
@@ -175,8 +182,8 @@ RUN sed -i \
 
 # Install Browser
 COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox
-# hadolint ignore=DL3008
 # ignore DL3008 because pinning is not desired
+# hadolint ignore=DL3008
 RUN add-apt-repository ppa:mozillateam/ppa &&\
     apt-get install -y --no-install-recommends firefox
 #

@@ -2,6 +2,7 @@
 # Make sure that the python lib verions here match the minor versions of dask-gateway found in the notebook image
 FROM ghcr.io/dask/dask:2024.1.0 as release
 
+# ignore DL3008 because pinning is not desired
 # hadolint ignore=DL3008
 RUN apt-get update &&\
     apt-get upgrade -y &&\

@@ -5,7 +5,6 @@ import boto3
 
 
 def main(image_name: str, aws_region: str, container_namespace: str, aws_profile):
-
     if not image_name.isalnum():
         raise ValueError(f"{image_name} is not pure alphanumeric.")
 
@@ -27,7 +26,6 @@ def main(image_name: str, aws_region: str, container_namespace: str, aws_profile
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--image_name", default=None)
     parser.add_argument("--aws_profile", default=None)

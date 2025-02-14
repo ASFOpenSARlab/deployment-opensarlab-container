@@ -1,7 +1,7 @@
 **
 !.gitignore
 !build.sh
-!dockerfile
+!Dockerfile
 !download.sh
 !pkgs
 !pkgs/**

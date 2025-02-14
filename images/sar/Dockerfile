@@ -6,16 +6,24 @@ WORKDIR /
 
 RUN set -ve
 
-RUN apt update
-RUN apt install --no-install-recommends -y \
+# ignore DL3059 to make the two codeblocks distinct
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3009,DL3059
+RUN apt-get update
+# ignore DL3008 because pinning is not desired
+# ignore DL3009 since deleting apt-get lists makes later installs fail
+# hadolint ignore=DL3008,DL3009
+RUN apt-get install --no-install-recommends -y \
         software-properties-common \
         git && \
-    apt-get install -y gpg-agent && \
+    apt-get install --no-install-recommends -y gpg-agent && \
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
-    apt update && \
-    apt upgrade -y
+    apt-get update && \
+    apt-get upgrade -y
 
-RUN apt install --no-install-recommends --fix-missing -y \
+# ignore DL3008 because pinning is not desired
+# hadolint ignore=DL3008
+RUN apt-get install --no-install-recommends --fix-missing -y \
     ### GENERAL
     zip \
     unzip \
@@ -63,6 +71,8 @@ RUN apt install --no-install-recommends --fix-missing -y \
 # Updating just conda and mamba will auto-remove pip, so force pip to update to remain
 #RUN mamba update -c conda-forge -y conda mamba pip
 
+# ignore DL3059 to make the two codeblocks distinct
+# hadolint ignore=DL3059
 RUN mamba install -c conda-forge -y \
     ### Install plotting and general
     awscli \
@@ -90,28 +100,31 @@ RUN mamba install -c conda-forge -y \
     distributed \
     --
 
-RUN python3 -m pip install \
+# ignore DL3059 to make the two codeblocks distinct
+# ignore DL3013 since pinning packages is not desired
+# hadolint ignore=DL3013,DL3059
+RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
         jupyterlab-jupyterbook-navigation==0.2.0 \
         jupyterlab_myst \
         ### For pyGMTSAR
-        pygmtsar &&\
-    cd / &&\
-        mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
-        git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/ &&\
-        cd /tmp/build/GMTSAR &&\
-        autoconf &&\
+        pygmtsar
+WORKDIR /
+RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
+        git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/
+WORKDIR /tmp/build/GMTSAR
+RUN     autoconf &&\
         ./configure --with-orbits-dir=/tmp CFLAGS='-z muldefs' LDFLAGS='-z muldefs' &&\
         make &&\
         make install &&\
         mv -v /tmp/build/GMTSAR/bin /usr/local/GMTSAR/bin &&\
-        rm -rf /tmp/build &&\
-    cd / &&\
+        rm -rf /tmp/build
+WORKDIR /
     ### Extra stuff
     # Make sure that any files in the home directory are jovyan permission
-    chown -R jovyan:users $HOME/ &&\
+RUN chown -R jovyan:users "$HOME/" &&\
     # Make sure mamba (within conda) has write access
     chmod -R 777 /opt/conda/pkgs/ &&\
     # Make sure JupyterLab settings is writable

@@ -1,3 +1,4 @@
+---
 name: opera
 channels:
   - conda-forge
@@ -42,4 +43,4 @@ dependencies:
   - s3fs>=2021.8.0
   - xarray=0.20.2
   - pip:
-    - gdal-utils
+      - gdal-utils

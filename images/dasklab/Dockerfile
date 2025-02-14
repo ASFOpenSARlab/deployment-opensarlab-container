@@ -5,6 +5,8 @@ WORKDIR /
 
 RUN set -ve
 
+# ignore DL3059 to make the two codeblocks distinct
+# hadolint ignore=DL3059
 RUN mamba install -c conda-forge -y \
     dask-gateway \
     dask=='2024.1.0' \

@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
@@ -21,13 +22,13 @@ Parameters:
 
   GitHubFullRepo:
     Type: String
-    Description: Owner/RepoName of desired GitHub path https://github.com/Owner/RepoName. 
+    Description: Owner/RepoName of desired GitHub path https://github.com/Owner/RepoName.
     Default: 'ASFOpenSARlab/opensarlab-container'
 
   GitHubBranchName:
     Type: String
     Default: 'main'
-  
+
 Resources:
 
   ContainerPipelineRole:
@@ -38,7 +39,7 @@ Resources:
         Statement:
           Effect: Allow
           Principal:
-            Service: 
+            Service:
               - cloudformation.amazonaws.com
               - codebuild.amazonaws.com
               - codepipeline.amazonaws.com
@@ -99,14 +100,14 @@ Resources:
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
-    Properties: 
-      ArtifactStore: 
+    Properties:
+      ArtifactStore:
         Type: S3
         Location: !Ref PipelineBucket
       Name: !Sub ${CostTagValue}-Container-Pipeline
-      RestartExecutionOnUpdate: False
+      RestartExecutionOnUpdate: false
       RoleArn: !GetAtt ContainerPipelineRole.Arn
-      Tags: 
+      Tags:
         - Key: !Sub ${CostTagKey}
           Value: !Sub ${CostTagValue}
       Stages:

@@ -1,0 +1,18 @@
+---
+name: Linting and Formatting
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+
+jobs:
+  shell:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-shell-code-quality.yaml@v0.0.3
+
+  python:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-python-code-quality.yaml@v0.0.3
+
+  jinja2:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-jinja2-code-quality.yaml@v0.0.3
+
+  yaml:
+    uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-yaml-code-quality.yaml@v0.0.3

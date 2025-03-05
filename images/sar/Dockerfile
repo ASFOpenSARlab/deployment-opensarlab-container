@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:lab-4.3.4 AS release
+FROM quay.io/jupyter/base-notebook:lab-4.3.4 as release
 
 # Base Stage ****************************************************************
 USER root
@@ -91,6 +91,10 @@ RUN mamba install -c conda-forge -y \
     jupyterlab-spellchecker \
     ipympl \
     jupyterlab_widgets \
+    jupyterlab-myst \
+    myst-nb \
+    mystmd \
+    myst-parser \
     ipywidgets \
     #jupyter-ai \
     jupyterlab-git \
@@ -109,7 +113,7 @@ RUN python3 -m pip install --no-cache-dir  \
         url-widget \
         opensarlab-frontend==1.5.1 \
         jupyterlab-jupyterbook-navigation==0.2.0 \
-        jupyterlab_myst \
+        #jupyterlab_myst \
         ### For pyGMTSAR
         pygmtsar
 WORKDIR /

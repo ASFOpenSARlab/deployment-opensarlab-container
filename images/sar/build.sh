@@ -16,7 +16,7 @@ COMMIT_HEAD=$(git rev-parse --short HEAD)
 
 IMAGE_NAME="$1"
 
-time docker build -f dockerfile.build --target testing .
+#time docker build -f dockerfile.build --target testing .
 time docker build -f dockerfile.build \
 	-t "$DOCKER_REGISTRY/$IMAGE_NAME:$BUILD_TAG" \
 	-t "$DOCKER_REGISTRY/$IMAGE_NAME:latest" \

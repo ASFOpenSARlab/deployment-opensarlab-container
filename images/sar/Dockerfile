@@ -34,7 +34,8 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     snaphu \
     curl \
     openssh-client \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglx-mesa0 \
     emacs \
     gnupg2 \
     jq \
@@ -43,7 +44,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     proj-bin \
     geotiff-bin \
     libshp-dev \
-    libshp2 \
+    libshp4 \
     libhdf5-dev \
     libnetcdf-dev \
     libgdal-dev \

@@ -112,8 +112,7 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
-        jupyterlab-jupyterbook-navigation==0.2.0 \
-        #jupyterlab_myst \
+        jupyterlab-jupyterbook-navigation==1.0.2 \
         ### For pyGMTSAR
         pygmtsar
 WORKDIR /

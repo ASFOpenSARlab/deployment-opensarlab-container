@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:lab-4.0.7 as release
+FROM quay.io/jupyter/base-notebook:lab-4.3.6 AS release
 
 # Base Stage ****************************************************************
 USER root
@@ -35,7 +35,8 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     snaphu \
     curl \
     openssh-client \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglx-mesa0 \
     emacs \
     gnupg2 \
     jq \
@@ -44,7 +45,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     proj-bin \
     geotiff-bin \
     libshp-dev \
-    libshp2 \
+    libshp4 \
     libhdf5-dev \
     libnetcdf-dev \
     libgdal-dev \
@@ -172,13 +173,13 @@ RUN sed -i \
     -e 's|if hub_control_panel_url|if LAB_SHORT_NAME|' \
     -e 's|{{ hub_control_panel_url }}|/lab/{{ LAB_SHORT_NAME }}/hub/home|' \
     -e 's|Hub Control Panel|Shutdown and Logout Page|' \
-    /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/templates/index.html
+    /opt/conda/lib/python3.12/site-packages/jupyter_remote_desktop_proxy/templates/index.html
 
 # ignore DL3059 to make the two codeblocks distinct
 # hadolint ignore=DL3059
 RUN sed -i \
     -e 's|cd |sleep 1 \&\& cd |' \
-    /opt/conda/lib/python3.11/site-packages/jupyter_remote_desktop_proxy/share/xstartup
+    /opt/conda/lib/python3.12/site-packages/jupyter_remote_desktop_proxy/share/xstartup
 
 # Install Browser
 COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox
@@ -186,6 +187,7 @@ COPY configs/mozilla-firefox.pref /etc/apt/preferences.d/mozilla-firefox
 # hadolint ignore=DL3008
 RUN add-apt-repository ppa:mozillateam/ppa &&\
     apt-get install -y --no-install-recommends firefox
+
 #
 # END Virtual Desktop
 ####
@@ -195,7 +197,7 @@ USER jovyan
 
 ##########################################
 
-FROM release as testing 
+FROM release AS testing 
 
 COPY tests/* /tests/
 

@@ -115,10 +115,12 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For pyGMTSAR
         pygmtsar
 
+ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \
+    mkdir -p "${PIXI_HOME}"; \
     curl -fsSL https://pixi.sh/install.sh | bash; \
-    ln -sf /root/.pixi/bin/pixi /opt/conda/bin/pixi; \
-    ln -sf /root/.pixi/bin/pixi /usr/local/bin/pixi; \
+    mv -v "${PIXI_HOME}/bin/pixi" /usr/local/bin/pixi; \
+    chmod 0755 /usr/local/bin/pixi; \
     pixi --version
 
 WORKDIR /

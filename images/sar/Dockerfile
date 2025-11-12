@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:lab-4.3.4 as release
+FROM jupyter/base-notebook:lab-4.0.7 as release
 
 # Base Stage ****************************************************************
 USER root
@@ -34,8 +34,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     snaphu \
     curl \
     openssh-client \
-    libgl1 \
-    libglx-mesa0 \
+    libgl1-mesa-glx \
     emacs \
     gnupg2 \
     jq \
@@ -44,7 +43,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     proj-bin \
     geotiff-bin \
     libshp-dev \
-    libshp4 \
+    libshp2 \
     libhdf5-dev \
     libnetcdf-dev \
     libgdal-dev \
@@ -91,10 +90,6 @@ RUN mamba install -c conda-forge -y \
     jupyterlab-spellchecker \
     ipympl \
     jupyterlab_widgets \
-    jupyterlab-myst \
-    myst-nb \
-    mystmd \
-    myst-parser \
     ipywidgets \
     #jupyter-ai \
     jupyterlab-git \
@@ -112,9 +107,16 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
-        jupyterlab-jupyterbook-navigation==1.0.2 \
+        git+https://github.com/ASFOpenSARlab/jb-toc.git@main#subdirectory=jb_toc_frontend \
+        git+https://github.com/ASFOpenSARlab/jb-toc.git@main#subdirectory=jb_toc \
+        mystmd \
+        jupyterlab_myst \
         ### For pyGMTSAR
         pygmtsar
+
+RUN curl -fsSL https://pixi.sh/install.sh | bash && \
+    mv /root/.pixi/bin/pixi /usr/local/bin/
+
 WORKDIR /
 RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
         git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/

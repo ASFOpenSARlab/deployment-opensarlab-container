@@ -115,15 +115,12 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For pyGMTSAR
         pygmtsar
 
-ARG PIXI_VERSION=0.56.0
 RUN set -eux; \
-    curl -fsSL -o /tmp/pixi.tgz \
-      "https://github.com/prefix-dev/pixi/releases/download/v${PIXI_VERSION}/pixi-${PIXI_VERSION}-linux-x86_64.tar.gz"; \
-    tar -xzf /tmp/pixi.tgz -C /usr/local/bin pixi; \
-    chmod 0755 /usr/local/bin/pixi; \
-    rm -f /tmp/pixi.tgz; \
+    curl -fsSL https://pixi.sh/install.sh | bash; \
+    ln -sf /root/.pixi/bin/pixi /opt/conda/bin/pixi; \
+    ln -sf /root/.pixi/bin/pixi /usr/local/bin/pixi; \
     pixi --version
-    
+
 WORKDIR /
 RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
         git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/

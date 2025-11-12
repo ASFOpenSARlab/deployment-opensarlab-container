@@ -33,6 +33,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     less \
     snaphu \
     curl \
+    ca-certificates \
     openssh-client \
     libgl1-mesa-glx \
     emacs \
@@ -58,8 +59,8 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     ### PyGMTSAR
     csh \
     autoconf \
-    make \ 
-    libtiff5-dev \ 
+    make \
+    libtiff5-dev \
     liblapack-dev \
     libgmt-dev \
     gmt-dcw \
@@ -114,8 +115,12 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For pyGMTSAR
         pygmtsar
 
-RUN curl -fsSL https://pixi.sh/install.sh | bash && \
-    mv /root/.pixi/bin/pixi /usr/local/bin/
+RUN set -eux; \
+    export HOME=/root; \
+    curl -fsSL https://pixi.sh/install.sh -o /tmp/pixi-install.sh; \
+    bash /tmp/pixi-install.sh -y; \
+    ln -sf /root/.pixi/bin/pixi /usr/local/bin/pixi; \
+    pixi --version
 
 WORKDIR /
 RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\

@@ -44,7 +44,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     proj-bin \
     geotiff-bin \
     libshp-dev \
-    libshp2 \
+    libshp4 \
     libhdf5-dev \
     libnetcdf-dev \
     libgdal-dev \

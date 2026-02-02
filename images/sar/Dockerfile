@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:lab-4.5.3 as release
+FROM quay.io/jupyter/base-notebook:lab-4.5.3 AS release
 
 # Base Stage ****************************************************************
 USER root

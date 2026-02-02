@@ -83,7 +83,7 @@ RUN mamba install -c conda-forge -y \
     plotly \
     'pyopenssl>=23.0.0' \
     zstd==1.5.5 \
-    zstandard==0.21.0 \
+    zstandard==0.25.0 \
     ### Install jupyter libaries
     kernda \
     jupyter-resource-usage \

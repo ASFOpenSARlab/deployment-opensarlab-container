@@ -35,7 +35,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     curl \
     ca-certificates \
     openssh-client \
-    libgl1-mesa-glx \
+    libglx-mesa0 \
     emacs \
     gnupg2 \
     jq \

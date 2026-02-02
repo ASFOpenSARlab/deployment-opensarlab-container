@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:lab-4.0.7 as release
+FROM jupyter/base-notebook:lab-4.5.3 as release
 
 # Base Stage ****************************************************************
 USER root
@@ -99,6 +99,8 @@ RUN mamba install -c conda-forge -y \
     dask-gateway \
     dask \
     distributed \
+    ipyleaflet \
+    jupytergis \
     --
 
 # ignore DL3059 to make the two codeblocks distinct

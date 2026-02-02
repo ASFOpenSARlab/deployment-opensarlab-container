@@ -15,11 +15,18 @@ RUN apt-get update
 # hadolint ignore=DL3008,DL3009
 RUN apt-get install --no-install-recommends -y \
         software-properties-common \
-        git && \
+        git \
+        curl && \
     apt-get install --no-install-recommends -y gpg-agent && \
     add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && \
     apt-get update && \
     apt-get upgrade -y
+
+ # Download and install nvm:
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+    \. "$HOME/.nvm/nvm.sh" && \
+    nvm install 24 && \
+    apt-get install --no-install-recommends -y npm
 
 # ignore DL3008 because pinning is not desired
 # hadolint ignore=DL3008

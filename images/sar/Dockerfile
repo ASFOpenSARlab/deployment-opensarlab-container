@@ -115,6 +115,8 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For pyGMTSAR
         pygmtsar
 
+RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y
+
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \
     mkdir -p "${PIXI_HOME}"; \

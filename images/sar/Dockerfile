@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/base-notebook:lab-4.5.3 as release
+FROM quay.io/jupyter/base-notebook:lab-4.5.3 AS release
 
 # Base Stage ****************************************************************
 USER root
@@ -109,8 +109,7 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
-        git+https://github.com/ASFOpenSARlab/jb-toc.git@main#subdirectory=jb_toc_frontend \
-        git+https://github.com/ASFOpenSARlab/jb-toc.git@main#subdirectory=jb_toc \
+        jb-toc \
         mystmd \
         jupyterlab_myst \
         ### For pyGMTSAR
@@ -150,7 +149,7 @@ RUN chown -R jovyan:users "$HOME/" &&\
     # Use the kernel display name `base` for the base conda environment
     mamba run -n base kernda --display-name base -o /opt/conda/share/jupyter/kernels/python3/kernel.json &&\
     mamba clean -y --all &&\
-    mamba init &&\
+    mamba shell init -s bash &&\
     rm -rf /home/jovyan/..?* /home/jovyan/.[!.]* /home/jovyan/*
 
 ### GMTSAR

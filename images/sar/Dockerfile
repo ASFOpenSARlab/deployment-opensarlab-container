@@ -1,4 +1,6 @@
-FROM quay.io/jupyter/base-notebook:lab-4.5.3 AS release
+# 2025-12-15 is JupyterLab v4.5.0
+# https://quay.io/repository/jupyter/base-notebook?tab=tags
+FROM quay.io/jupyter/base-notebook:2025-12-15 AS release
 
 # Base Stage ****************************************************************
 USER root

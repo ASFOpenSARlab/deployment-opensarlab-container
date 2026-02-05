@@ -114,6 +114,7 @@ RUN python3 -m pip install --no-cache-dir  \
         jb-toc \
         mystmd \
         jupyterlab_myst \
+        playwright \
         ### For pyGMTSAR
         pygmtsar
 

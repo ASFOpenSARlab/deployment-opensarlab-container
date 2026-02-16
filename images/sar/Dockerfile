@@ -154,7 +154,7 @@ RUN chown -R jovyan:users "$HOME/" &&\
     # Use the kernel display name `base` for the base conda environment
     mamba run -n base kernda --display-name base -o /opt/conda/share/jupyter/kernels/python3/kernel.json &&\
     mamba clean -y --all &&\
-    echo TheCondaPrefix $CONDA_PREFIX
+    echo TheCondaPrefix $CONDA_PREFIX &&\
     mamba shell init -s bash --root-prefix $CONDA_PREFIX &&\
     rm -rf /home/jovyan/..?* /home/jovyan/.[!.]* /home/jovyan/*
 

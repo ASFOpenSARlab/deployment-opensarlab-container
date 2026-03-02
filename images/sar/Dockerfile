@@ -1,4 +1,6 @@
-FROM jupyter/base-notebook:lab-4.0.7 as release
+# 2025-12-15 is JupyterLab v4.5.0
+# https://quay.io/repository/jupyter/base-notebook?tab=tags
+FROM quay.io/jupyter/base-notebook:2025-12-15 AS release
 
 # Base Stage ****************************************************************
 USER root
@@ -33,8 +35,9 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     less \
     snaphu \
     curl \
+    ca-certificates \
     openssh-client \
-    libgl1-mesa-glx \
+    libglx-mesa0 \
     emacs \
     gnupg2 \
     jq \
@@ -43,7 +46,7 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     proj-bin \
     geotiff-bin \
     libshp-dev \
-    libshp2 \
+    libshp4 \
     libhdf5-dev \
     libnetcdf-dev \
     libgdal-dev \
@@ -58,8 +61,8 @@ RUN apt-get install --no-install-recommends --fix-missing -y \
     ### PyGMTSAR
     csh \
     autoconf \
-    make \ 
-    libtiff5-dev \ 
+    make \
+    libtiff5-dev \
     liblapack-dev \
     libgmt-dev \
     gmt-dcw \
@@ -81,8 +84,7 @@ RUN mamba install -c conda-forge -y \
     bokeh \
     plotly \
     'pyopenssl>=23.0.0' \
-    zstd==1.5.5 \
-    zstandard==0.21.0 \
+    zstandard==0.25.0 \
     ### Install jupyter libaries
     kernda \
     jupyter-resource-usage \
@@ -98,6 +100,8 @@ RUN mamba install -c conda-forge -y \
     dask-gateway \
     dask \
     distributed \
+    ipyleaflet \
+    jupytergis \
     --
 
 # ignore DL3059 to make the two codeblocks distinct
@@ -107,10 +111,23 @@ RUN python3 -m pip install --no-cache-dir  \
         ### For ASF
         url-widget \
         opensarlab-frontend==1.5.1 \
-        jupyterlab-jupyterbook-navigation==0.2.0 \
+        jb-toc \
+        mystmd \
         jupyterlab_myst \
+        playwright \
         ### For pyGMTSAR
         pygmtsar
+
+RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y
+
+ENV PIXI_HOME=/usr/local/pixi
+RUN set -eux; \
+    mkdir -p "${PIXI_HOME}"; \
+    curl -fsSL https://pixi.sh/install.sh | bash; \
+    mv -v "${PIXI_HOME}/bin/pixi" /usr/local/bin/pixi; \
+    chmod 0755 /usr/local/bin/pixi; \
+    pixi --version
+
 WORKDIR /
 RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
         git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/
@@ -137,7 +154,7 @@ RUN chown -R jovyan:users "$HOME/" &&\
     # Use the kernel display name `base` for the base conda environment
     mamba run -n base kernda --display-name base -o /opt/conda/share/jupyter/kernels/python3/kernel.json &&\
     mamba clean -y --all &&\
-    mamba init &&\
+    mamba shell init -s bash --root-prefix=/opt/conda/ &&\
     rm -rf /home/jovyan/..?* /home/jovyan/.[!.]* /home/jovyan/*
 
 ### GMTSAR

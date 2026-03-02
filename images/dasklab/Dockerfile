@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:lab-4.0.7 AS release
+FROM quay.io/jupyter/base-notebook:lab-4.3.4 AS release
 
 USER root
 WORKDIR /

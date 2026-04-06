@@ -91,6 +91,7 @@ RUN mamba install -c conda-forge -y \
     nb_conda_kernels \
     jupyterlab-spellchecker \
     ipympl \
+    jupyterlab-h5web \
     jupyterlab_widgets \
     ipywidgets \
     #jupyter-ai \
@@ -108,15 +109,15 @@ RUN mamba install -c conda-forge -y \
 # ignore DL3013 since pinning packages is not desired
 # hadolint ignore=DL3013,DL3059
 RUN python3 -m pip install --no-cache-dir  \
-        ### For ASF
-        url-widget \
-        opensarlab-frontend==1.5.1 \
-        jb-toc \
-        mystmd \
-        jupyterlab_myst \
-        playwright \
-        ### For pyGMTSAR
-        pygmtsar
+    ### For ASF
+    url-widget \
+    opensarlab-frontend==1.5.1 \
+    jb-toc \
+    mystmd \
+    jupyterlab_myst \
+    playwright \
+    ### For pyGMTSAR
+    pygmtsar
 
 RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y
 
@@ -129,18 +130,23 @@ RUN set -eux; \
     pixi --version
 
 WORKDIR /
-RUN     mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
-        git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/
+
+RUN mkdir -p /tmp/build/GMTSAR /usr/local/GMTSAR &&\
+    git clone --branch master https://github.com/gmtsar/gmtsar /tmp/build/GMTSAR/
+
 WORKDIR /tmp/build/GMTSAR
-RUN     autoconf &&\
-        ./configure --with-orbits-dir=/tmp CFLAGS='-z muldefs' LDFLAGS='-z muldefs' &&\
-        make &&\
-        make install &&\
-        mv -v /tmp/build/GMTSAR/bin /usr/local/GMTSAR/bin &&\
-        rm -rf /tmp/build
+
+RUN autoconf &&\
+    ./configure --with-orbits-dir=/tmp CFLAGS='-z muldefs' LDFLAGS='-z muldefs' &&\
+    make &&\
+    make install &&\
+    mv -v /tmp/build/GMTSAR/bin /usr/local/GMTSAR/bin &&\
+    rm -rf /tmp/build
+
 WORKDIR /
-    ### Extra stuff
-    # Make sure that any files in the home directory are jovyan permission
+
+### Extra stuff
+# Make sure that any files in the home directory are jovyan permission
 RUN chown -R jovyan:users "$HOME/" &&\
     # Make sure mamba (within conda) has write access
     chmod -R 777 /opt/conda/pkgs/ &&\

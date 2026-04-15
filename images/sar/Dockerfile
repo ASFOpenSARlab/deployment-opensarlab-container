@@ -113,7 +113,7 @@ RUN python3 -m pip install --no-cache-dir  \
     url-widget \
     opensarlab-frontend==1.5.1 \
     jb-toc \
-    nbgitpuller-jl-interface==0.3.0 \
+    nbgitpuller-jl-interface==0.4.0 \
     mystmd \
     jupyterlab_myst \
     playwright \

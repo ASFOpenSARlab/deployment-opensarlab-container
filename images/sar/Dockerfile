@@ -96,6 +96,7 @@ RUN mamba install -c conda-forge -y \
     ipywidgets \
     #jupyter-ai \
     jupyterlab-git \
+    jupyterlab-tour \
     panel \
     ### Dask
     dask-gateway \

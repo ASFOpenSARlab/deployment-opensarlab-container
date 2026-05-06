@@ -111,7 +111,7 @@ RUN mamba install -c conda-forge -y \
 # hadolint ignore=DL3013,DL3059
 RUN python3 -m pip install --no-cache-dir  \
     ### Update jupyter server to the latest. This should probably be removed in later updates.
-    jupyter_server=="2.18.0" \
+    # jupyter_server=="2.18.0" \
     ### For ASF
     url-widget \
     opensarlab-frontend==1.5.1 \

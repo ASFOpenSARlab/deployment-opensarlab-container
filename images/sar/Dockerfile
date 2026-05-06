@@ -1,6 +1,6 @@
-# 2025-12-15 is JupyterLab v4.5.0
+# 2026-05-04 is JupyterLab v4.5.7
 # https://quay.io/repository/jupyter/base-notebook?tab=tags
-FROM quay.io/jupyter/base-notebook:2025-12-15 AS release
+FROM quay.io/jupyter/base-notebook:2026-05-04 AS release
 
 # Base Stage ****************************************************************
 USER root
@@ -110,10 +110,13 @@ RUN mamba install -c conda-forge -y \
 # ignore DL3013 since pinning packages is not desired
 # hadolint ignore=DL3013,DL3059
 RUN python3 -m pip install --no-cache-dir  \
+    ### Update jupyter server to the latest. This should probably be removed in later updates.
+    jupyter_server=="2.18.0" \
     ### For ASF
     url-widget \
     opensarlab-frontend==1.5.1 \
     jb-toc \
+    # nbgitpuller-jl-interface==1.0.0 \
     mystmd \
     jupyterlab_myst \
     playwright \

@@ -96,7 +96,7 @@ RUN mamba install -c conda-forge -y \
     ipywidgets \
     #jupyter-ai \
     jupyterlab-git \
-    jupyterlab-tour \
+    # jupyterlab-tour \
     panel \
     ### Dask
     dask-gateway \
@@ -116,7 +116,7 @@ RUN python3 -m pip install --no-cache-dir  \
     url-widget \
     opensarlab-frontend==1.5.1 \
     jb-toc \
-    nbgitpuller-jl-interface==1.0.0 \
+    # nbgitpuller-jl-interface==1.0.0 \
     mystmd \
     jupyterlab_myst \
     playwright \

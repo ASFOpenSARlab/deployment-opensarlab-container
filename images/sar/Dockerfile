@@ -97,6 +97,9 @@ RUN mamba install -c conda-forge -y \
     #jupyter-ai \
     jupyterlab-git \
     jupyterlab-tour \
+    # Coordinate with opensciencelab.yaml
+    'jupyterhub>=5.4.6' \
+    'jupyter_server>=2.18.0' \
     panel \
     ### Dask
     dask-gateway \
@@ -110,8 +113,6 @@ RUN mamba install -c conda-forge -y \
 # ignore DL3013 since pinning packages is not desired
 # hadolint ignore=DL3013,DL3059
 RUN python3 -m pip install --no-cache-dir  \
-    ### Update jupyter server to the latest. This should probably be removed in later updates.
-    # jupyter_server=="2.18.0" \
     ### For ASF
     url-widget \
     opensarlab-frontend==1.5.1 \

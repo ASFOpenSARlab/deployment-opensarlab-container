@@ -125,7 +125,7 @@ RUN python3 -m pip install --no-cache-dir  \
     pygmtsar
 
 RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y &&\
-    mamba uninstall jupyter_server_ydoc jupyter_ydoc --yes
+    jupyter server extension disable --sys-prefix jupyter_server_ydoc
 
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \

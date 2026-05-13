@@ -124,8 +124,7 @@ RUN python3 -m pip install --no-cache-dir  \
     ### For pyGMTSAR
     pygmtsar
 
-RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y &&\
-    jupyter server extension disable --sys-prefix jupyter_server_ydoc
+# RUN pip uninstall jupyter_collaboration jupyter-collaboration-ui -y
 
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \

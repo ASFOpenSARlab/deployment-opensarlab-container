@@ -124,8 +124,7 @@ RUN python3 -m pip install --no-cache-dir  \
     ### For pyGMTSAR
     pygmtsar
 
-# RUN pip uninstall jupyter-collaboration-ui -y # this package is installed from conda-forge not pypi
-RUN mamba uninstall jupyter-collaboration-ui --yes
+RUN pip uninstall jupyter-collaboration-ui -y
 
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \

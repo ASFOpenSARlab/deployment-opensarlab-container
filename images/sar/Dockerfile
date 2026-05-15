@@ -126,7 +126,7 @@ RUN python3 -m pip install --no-cache-dir  \
     ### For pyGMTSAR
     pygmtsar
 
-RUN jupyter labextension disable @jupyter/collaboration-extension --sys-prefix
+RUN jupyter labextension disable @jupyter/collaboration-extension
 
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \

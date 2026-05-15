@@ -96,7 +96,6 @@ RUN mamba install -c conda-forge -y \
     ipywidgets \
     #jupyter-ai \
     jupyterlab-git \
-    jupyterlab-tour \
     # Coordinate with opensciencelab.yaml
     'jupyterhub>=5.4.6' \
     'jupyter_server>=2.18.0' \
@@ -106,6 +105,8 @@ RUN mamba install -c conda-forge -y \
     dask \
     distributed \
     ipyleaflet \
+    'jupyter-collaboration>=4.4.0' \
+    'jupyter-collaboration-ui>=2.4.0' \
     jupytergis \
     --
 
@@ -125,7 +126,7 @@ RUN python3 -m pip install --no-cache-dir  \
     ### For pyGMTSAR
     pygmtsar
 
-RUN pip uninstall jupyter-collaboration-ui -y
+RUN jupyter labextension disable @jupyter/collaboration-extension --sys-prefix
 
 ENV PIXI_HOME=/usr/local/pixi
 RUN set -eux; \

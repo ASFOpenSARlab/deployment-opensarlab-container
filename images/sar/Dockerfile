@@ -116,10 +116,10 @@ RUN mamba install -c conda-forge -y \
 RUN python3 -m pip install --no-cache-dir  \
     ### For ASF
     url-widget \
-    opensarlab-frontend==1.5.1 \
+    opensarlab-frontend==1.5.4 \
     jb-toc \
     nbgitpuller-jl-interface==1.0.0 \
-    opensciencelab-tours==0.2.2 \
+    opensciencelab-tours==0.3.0 \
     mystmd \
     jupyterlab_myst \
     playwright \

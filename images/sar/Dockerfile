@@ -119,7 +119,7 @@ RUN python3 -m pip install --no-cache-dir  \
     opensarlab-frontend==1.5.4 \
     jb-toc \
     nbgitpuller-jl-interface==1.0.0 \
-    opensciencelab-tours==0.3.0 \
+    opensciencelab-tours==0.3.1 \
     mystmd \
     jupyterlab_myst \
     playwright \

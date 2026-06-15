@@ -135,6 +135,8 @@ RUN set -eux; \
     mv -v "${PIXI_HOME}/bin/pixi" /usr/local/bin/pixi; \
     chmod 0755 /usr/local/bin/pixi; \
     pixi --version
+# reset PIXI_HOME to location on persistent volume after install for storing workspaces.toml
+ENV PIXI_HOME=/home/jovyan/.pixi
 
 WORKDIR /
 

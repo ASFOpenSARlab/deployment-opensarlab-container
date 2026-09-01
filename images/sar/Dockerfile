@@ -84,7 +84,10 @@ RUN mamba install -c conda-forge -y \
     bokeh \
     plotly \
     'pyopenssl>=23.0.0' \
-    zstandard==0.25.0 \
+    zstandard==0.25.0
+
+# hadolint ignore=DL3059
+RUN mamba install -c conda-forge -y \
     ### Install jupyter libaries
     kernda \
     jupyter-resource-usage \
@@ -99,7 +102,10 @@ RUN mamba install -c conda-forge -y \
     # Coordinate with opensciencelab.yaml
     'jupyterhub>=5.4.6' \
     'jupyter_server>=2.18.0' \
-    panel \
+    panel
+
+# hadolint ignore=DL3059
+RUN mamba install -c conda-forge -y \
     ### Dask
     dask-gateway \
     dask \

@@ -124,7 +124,7 @@ RUN python3 -m pip install --no-cache-dir  \
     url-widget \
     opensarlab-frontend==1.5.4 \
     jb-toc \
-    nbgitpuller-jl-interface==1.0.2 \
+    nbgitpuller-jl-interface==1.1.0a1 \
     opensciencelab-tours==0.3.2 \
     mystmd \
     jupyterlab_myst \

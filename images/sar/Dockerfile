@@ -1,5 +1,6 @@
+# Unable to upgrade past lab-4.6.3 until ubuntugis-unstable supports ubuntu 26.04
 # https://quay.io/repository/jupyter/base-notebook?tab=tags
-FROM quay.io/jupyter/base-notebook:lab-4.6.4 AS release
+FROM quay.io/jupyter/base-notebook:lab-4.6.3 AS release
 
 # Base Stage ****************************************************************
 USER root
@@ -99,7 +100,7 @@ RUN mamba install -c conda-forge -y \
     #jupyter-ai \
     jupyterlab-git \
     # Coordinate with opensciencelab.yaml
-    'jupyterhub>=5.4.6' \
+    'jupyterhub>=5.5.2' \
     'jupyter_server>=2.18.0' \
     panel
 

@@ -21,7 +21,7 @@ jobs:
   build-and-push-image:
     # Don't run if updating documentation
     if: "!startsWith(github.event.head_commit.message, 'docs')"
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read

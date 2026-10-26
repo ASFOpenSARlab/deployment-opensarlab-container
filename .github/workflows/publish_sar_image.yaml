@@ -56,7 +56,7 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            979581550289.dkr.ecr.us-west-2.amazonaws.com/lab_images
+            ${{ vars.CONTAINER_ECR_REPO }}
           tags: |
             type=sha
             type=ref,event=branch

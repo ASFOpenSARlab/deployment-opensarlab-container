@@ -62,7 +62,7 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ vars.CONTAINER_ECR_REPO }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha
             type=raw,value=${{ needs.setup.outputs.deploy_prefix }}

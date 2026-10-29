@@ -58,5 +58,3 @@ jobs:
             ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.branchtag }}
             ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.environment }}
           # yamllint enable rule:line-length
-          cache-from: type=gha
-          cache-to: type=gha,mode=max

@@ -11,11 +11,6 @@ on:  # yamllint disable-line rule:truthy
     tags:
       - "v*.*.*"
 
-# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}_sar
-
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   setup:
@@ -28,6 +23,6 @@ jobs:
       - setup
     uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-docker-build.yaml@v1.2.1
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      image-name: ${{ github.repository }}_sar
       dockerfile: images/sar/Dockerfile
       push-to-aws: true

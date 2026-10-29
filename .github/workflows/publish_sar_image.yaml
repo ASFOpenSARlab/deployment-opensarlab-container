@@ -35,6 +35,7 @@ jobs:
     needs:
       - build_image
       - setup
+    environment: ${{ needs.setup.outputs.environment }}
     steps:
       - name: AWS Login
         uses: aws-actions/configure-aws-credentials@v4

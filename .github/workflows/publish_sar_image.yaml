@@ -59,8 +59,8 @@ jobs:
       # yamllint disable rule:line-length
       - name: Fetch from ghcr, retag, push to ecr
         run: |
-          retags=("${{ needs.setup.outputs.deploy_prefix }}" "{{ needs.setup.outputs.shortsha }}" "${{ needs.setup.outputs.branchtag }}" "{{ needs.setup.outputs.environment }}")
-          docker fetch ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }}
+          retags=("${{ needs.setup.outputs.deploy_prefix }}" "${{ needs.setup.outputs.shortsha }}" "${{ needs.setup.outputs.branchtag }}" "${{ needs.setup.outputs.environment }}")
+          docker pull ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }}
           # Loop over the retags, tag + push
           for retag in "${retags[@]}"; do
             docker tag ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }} ${{ env.ECR_IMAGE }}:$retag

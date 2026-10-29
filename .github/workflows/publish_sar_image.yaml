@@ -32,7 +32,6 @@ jobs:
       id-token: write
       contents: read
     env:
-      IMAGE_NAME: ${{ github.event.repository.name }}_sar
       GHCR_IMAGE: ghcr.io/asfopensarlab/${{ github.event.repository.name }}_sar
       ECR_IMAGE: ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.event.repository.name }}_sar
     runs-on: ubuntu-latest
@@ -59,25 +58,12 @@ jobs:
       # yamllint disable rule:line-length
       - name: Fetch from ghcr, retag, push to ecr
         run: |
+          # All the items we want to retag
           retags=("${{ needs.setup.outputs.deploy_prefix }}" "${{ needs.setup.outputs.shortsha }}" "${{ needs.setup.outputs.branchtag }}" "${{ needs.setup.outputs.environment }}")
+          # Where to pull the most recent build
           docker pull ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }}
           # Loop over the retags, tag + push
           for retag in "${retags[@]}"; do
             docker tag ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }} ${{ env.ECR_IMAGE }}:$retag
             docker push ${{ env.ECR_IMAGE }}:$retag
           done
-
-      # This works, but rebuilds
-      #- name: ECR Push
-      #  uses: docker/build-push-action@v5
-      #  with:
-      #    file: images/sar/Dockerfile
-      #    push: true
-      #    pull: false
-      #    # yamllint disable rule:line-length
-      #    tags: |
-      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.deploy_prefix }}
-      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.shortsha }}
-      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.branchtag }}
-      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.environment }}
-      #    # yamllint enable rule:line-length

@@ -25,4 +25,34 @@ jobs:
     with:
       image-name: ${{ github.repository }}_sar
       dockerfile: images/sar/Dockerfile
-      push-to-aws: true
+
+  retag_for_aws:
+    runs-on: ubuntu-latest
+    needs:
+      - build_image
+      - setup
+    steps:
+      - name: AWS Login
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{vars.AWS_ACCOUNT_ID}}:role/${{vars.OIDC_IAM_ROLE}}
+          aws-region: ${{ vars.AWS_REGION }}
+          
+      - name: ECR Login
+        uses: aws-actions/amazon-ecr-login@v2
+        
+      - name: ECR Push
+        uses: docker/build-push-action@v5
+        with:
+          file: images/sar/Dockerfile
+          push: true
+          pull: false
+          # yamllint disable rule:line-length
+          tags: |
+            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.deploy_prefix }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.shortsha }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.branchtag }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.environment }}
+          # yamllint enable rule:line-length
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

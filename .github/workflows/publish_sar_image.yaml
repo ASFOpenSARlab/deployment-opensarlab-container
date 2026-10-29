@@ -23,7 +23,7 @@ jobs:
       - setup
     uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-docker-build.yaml@v1.2.1
     with:
-      image-name: ${{ github.repository }}_sar
+      image-name: ${{ github.event.repository.name }}_sar
       dockerfile: images/sar/Dockerfile
 
   retag_for_aws:
@@ -31,6 +31,10 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      IMAGE_NAME: ${{ github.event.repository.name }}_sar
+      GHCR_IMAGE: ${{ github.repository_owner }}/${{ github.event.repository.name }}_sar
+      ECR_IMAGE: ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.event.repository.name }}_sar
     runs-on: ubuntu-latest
     needs:
       - build_image
@@ -44,17 +48,36 @@ jobs:
           
       - name: ECR Login
         uses: aws-actions/amazon-ecr-login@v2
-        
-      - name: ECR Push
-        uses: docker/build-push-action@v5
+
+      # Extraneous?
+      - uses: docker/login-action@v2
         with:
-          file: images/sar/Dockerfile
-          push: true
-          pull: false
-          # yamllint disable rule:line-length
-          tags: |
-            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.deploy_prefix }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.shortsha }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.branchtag }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.environment }}
-          # yamllint enable rule:line-length
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # yamllint disable rule:line-length
+      - name: Fetch from ghcr, retag, push to ecr
+        run: |
+          retags=("${{ needs.setup.outputs.deploy_prefix }}" "{{ needs.setup.outputs.shortsha }}" "${{ needs.setup.outputs.branchtag }}" "{{ needs.setup.outputs.environment }}")
+          docker fetch ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }}
+          # Loop over the retags, tag + push
+          for retag in "${retags[@]}"; do
+            docker tag ${{ env.GHCR_IMAGE }}:${{ needs.setup.outputs.branchtag }} ${{ env.ECR_IMAGE }}:$retag
+            docker push ${{ env.ECR_IMAGE }}:$retag
+          done
+
+      # This works, but rebuilds
+      #- name: ECR Push
+      #  uses: docker/build-push-action@v5
+      #  with:
+      #    file: images/sar/Dockerfile
+      #    push: true
+      #    pull: false
+      #    # yamllint disable rule:line-length
+      #    tags: |
+      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.deploy_prefix }}
+      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.shortsha }}
+      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.branchtag }}
+      #      ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.environment }}
+      #    # yamllint enable rule:line-length

@@ -53,8 +53,8 @@ jobs:
           pull: false
           # yamllint disable rule:line-length
           tags: |
-            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.deploy_prefix }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.shortsha }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.branchtag }}
-            ${{ vars.CONTAINER_ECR_PREFIX }}/${{ github.repository }}_sar:${{ needs.setup.outputs.environment }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.deploy_prefix }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.shortsha }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.branchtag }}
+            ${{ vars.CONTAINER_ECR_PREFIX }}/deployment-opensarlab-container_sar:${{ needs.setup.outputs.environment }}
           # yamllint enable rule:line-length

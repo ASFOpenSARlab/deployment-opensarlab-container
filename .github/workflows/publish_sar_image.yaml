@@ -1,3 +1,4 @@
+---
 name: Create and publish a Docker image
 
 # Configures this workflow to run every time a change is pushed to the branch called `release`.
@@ -43,7 +44,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{vars.AWS_ACCOUNT_ID}}:role/${{vars.CONTAINER_ECR_OIDC_IAM_ROLE_NAME}}
           aws-region: ${{ vars.AWS_REGION }}
-          
       - name: ECR Login
         uses: aws-actions/amazon-ecr-login@v2
 

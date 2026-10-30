@@ -1,5 +1,3 @@
----
-# https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
 name: Create and publish a Docker image
 
 # Configures this workflow to run every time a change is pushed to the branch called `release`.
@@ -7,10 +5,11 @@ on:  # yamllint disable-line rule:truthy
   workflow_dispatch: {}
 
   push:
-    branches: ['main', 'test']
+    branches: [main, test]
     tags:
-      - "v*.*.*"
+      - v*.*.*
 
+# yamllint disable rule:line-length
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   setup:
@@ -55,9 +54,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # yamllint disable rule:line-length
       - name: Fetch from ghcr, retag, push to ecr
-        run: |
+        run: |-
           # All the items we want to retag
           retags=("${{ needs.setup.outputs.deploy_prefix }}" "${{ needs.setup.outputs.shortsha }}" "${{ needs.setup.outputs.branchtag }}" "${{ needs.setup.outputs.environment }}")
           # Where to pull the most recent build

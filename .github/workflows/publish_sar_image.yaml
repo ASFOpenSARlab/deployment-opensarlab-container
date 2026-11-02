@@ -23,6 +23,9 @@ jobs:
       - setup
     uses: ASFOpenSARlab/osl-utils/.github/workflows/reusable-docker-build.yaml@v1.2.1
     with:
-      image-name: ${{ github.repository }}_sar
+      image-name: ${{ github.event.repository.name }}_sar
       dockerfile: images/sar/Dockerfile
       push-to-aws: true
+    secrets:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -1,3 +1,6 @@
+# Archive Notice
+This repository has been archived in favour of https://github.com/ASFOpenSARlab/lab-images/
+
 # deployment-opensarlab-container
 
 This repository hosts the container image used by OpenSARLab,
